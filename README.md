@@ -4,10 +4,6 @@
 This API provides endpoints for managing filters. In the scope of test assignment two functionalities implemented:
 retrieve filters and save new one.
 
-![img.png](img.png)
-
-![img_1.png](img_1.png)
-
 ### Base URL
 The base URL for all endpoints is `/api/v1/filters`.
 ### Endpoints
