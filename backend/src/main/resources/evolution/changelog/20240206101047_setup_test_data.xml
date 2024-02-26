@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
+
+  <changeSet author="osenkiv" id="01_20240206101047_setup_test_data">
+    <sql>
+      create table filter
+      (
+        id SERIAL PRIMARY KEY,
+        name varchar(100),
+        selection varchar(100),
+        created_at timestamp not null DEFAULT CURRENT_TIMESTAMP,
+        updated_at timestamp not null DEFAULT CURRENT_TIMESTAMP,
+        is_active boolean default true
+      )
+    </sql>
+    <sql>
+      create table criteria
+      (
+        id SERIAL PRIMARY KEY,
+        filter_id bigint not null,
+        title varchar(255) not null,
+        type varchar(255) not null,
+        value varchar(255) not null,
+        condition varchar(50) not null,
+        created_at timestamp not null DEFAULT CURRENT_TIMESTAMP,
+        updated_at timestamp not null DEFAULT CURRENT_TIMESTAMP,
+        is_active boolean default true,
+        CONSTRAINT fk_filter FOREIGN KEY (filter_id) REFERENCES filter(id)
+        )
+    </sql>
+    <sql>
+      INSERT INTO filter(name, selection) VALUES ('My Filter 1', 'ONE');
+      INSERT INTO filter(name, selection) VALUES ('My Filter 2', 'ONE');
+    </sql>
+    <sql>
+      INSERT INTO criteria(filter_id, title, type, value, condition) VALUES
+       (1, 'Amount', 'NUMBER', '4', 'MORE'),
+       (1, 'Title', 'TEXT', 'Meow', 'STARTS_WITH'),
+       (1, 'Date', 'DATE', '2021-10-25', 'FROM');
+      INSERT INTO criteria(filter_id, title, type, value, condition) VALUES
+       (2, 'Amount', 'NUMBER', '4', 'MORE'),
+       (2, 'Weight', 'NUMBER', '42.5', 'LESS'),
+       (2, 'Title', 'TEXT', 'Meow', 'STARTS_WITH'),
+       (2, 'Date', 'DATE', '2021-10-25', 'FROM');
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
